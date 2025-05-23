@@ -2,181 +2,241 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Retail Dynamic Pricing Predictor</title>
+    <title>Retail Dynamic Pricing Dashboard</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <style>
-      body {
-        background-color: #f8f9fa;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
   </head>
-  <body
-    class="d-flex align-items-center justify-content-center"
-    style="height: 100vh"
-  >
-    <div class="container">
-      <div class="card shadow p-4">
-        <h2 class="text-center mb-4">Dynamic Pricing Predictor</h2>
-        <form method="POST">
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Category</label>
-            <div class="col-sm-8">
-              <select name="category" class="form-select" required>
-                <option value="">Select</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Clothing">Clothing</option>
-                <option value="Groceries">Groceries</option>
-                <option value="Toys">Toys</option>
-              </select>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 sidebar p-3">
+          <h4 class="text-center">Retail</h4>
+          <hr />
+          <a href="{{ url_for('main.analytics') }}">Analytics</a>
+          <a href="{{ url_for('main.home') }}">Prediction</a>
+        </nav>
+
+        <main class="col-md-10 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>Dynamic Pricing Predictor</h3>
+            <div>
+              <span class="me-3">Welcome, {{ username }}</span>
+              <a
+                href="{{ url_for('auth.logout') }}"
+                class="btn btn-outline-secondary btn-sm"
+                >Logout</a
+              >
             </div>
           </div>
 
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Region</label>
-            <div class="col-sm-8">
-              <select name="region" class="form-select" required>
-                <option value="">Select</option>
-                <option value="North">North</option>
-                <option value="South">South</option>
-                <option value="East">East</option>
-                <option value="West">West</option>
-              </select>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-card">
+                <form method="POST">
+                  <h5 class="mb-4">Enter Product Details</h5>
+
+                  <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-select" required>
+                      <option value="">Select</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Clothing">Clothing</option>
+                      <option value="Groceries">Groceries</option>
+                      <option value="Toys">Toys</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Region</label>
+                    <select name="region" class="form-select" required>
+                      <option value="">Select</option>
+                      <option value="North">North</option>
+                      <option value="South">South</option>
+                      <option value="East">East</option>
+                      <option value="West">West</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Inventory Level</label>
+                    <input
+                      type="number"
+                      name="inventory"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Units Sold</label>
+                    <input
+                      type="number"
+                      name="units_sold"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Units Ordered</label>
+                    <input
+                      type="number"
+                      name="units_ordered"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Demand Forecast</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      name="demand"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Competitor Pricing</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      name="competition"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Weather Condition</label>
+                    <select name="weather" class="form-select" required>
+                      <option value="">Select</option>
+                      <option value="Sunny">Sunny</option>
+                      <option value="Rainy">Rainy</option>
+                      <option value="Snowy">Snowy</option>
+                      <option value="Cloudy">Cloudy</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Holiday/Promotion</label>
+                    <select name="holiday" class="form-select" required>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Seasonality</label>
+                    <select name="seasonality" class="form-select" required>
+                      <option value="">Select</option>
+                      <option value="High">Spring</option>
+                      <option value="Medium">Summer</option>
+                      <option value="Low">Autumn</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Discount (%)</label>
+                    <input
+                      type="number"
+                      name="discount"
+                      step="0.01"
+                      min="0"
+                      max="100"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+
+                  <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                      Predict Optimal Price
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              {% if prediction is not none %}
+              <div class="prediction-box text-center">
+                <h4>Predicted Optimal Price</h4>
+                <p class="display-4 text-success">${{ prediction }}</p>
+              </div>
+              {% endif %}
+
+              <div id="preview" class="mt-3"></div>
+
+              <div
+                id="success-modal"
+                class="modal fade"
+                tabindex="-1"
+                aria-hidden="true"
+                aria-labelledby="successModalLabel"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content bg-success text-white text-center">
+                    <div class="modal-body">
+                      <h5 class="modal-title mb-0" id="successModalLabel">
+                        Saved successfully!
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mt-4 p-3">
+                <h5 class="mb-3">Recent Predictions</h5>
+
+                {% if recent_predictions %}
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Category</th>
+                        <th>Region</th>
+                        <th>Inventory</th>
+                        <th>Units Sold</th>
+                        <th>Price ($)</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for row in recent_predictions %}
+                      <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                        <td>${{ "%.2f"|format(row[4]) }}</td>
+                        <td>
+                          {{ row[5].strftime("%Y-%m-%d") if row[5] else 'N/A' }}
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No recent predictions available.</p>
+                {% endif %}
+              </div>
             </div>
           </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Inventory Level</label>
-            <div class="col-sm-8">
-              <input
-                type="number"
-                name="inventory"
-                class="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Units Sold</label>
-            <div class="col-sm-8">
-              <input
-                type="number"
-                name="units_sold"
-                class="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Units Ordered</label>
-            <div class="col-sm-8">
-              <input
-                type="number"
-                name="units_ordered"
-                class="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Demand Forecast</label>
-            <div class="col-sm-8">
-              <input
-                type="number"
-                step="0.01"
-                name="demand"
-                class="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Competitor Pricing</label>
-            <div class="col-sm-8">
-              <input
-                type="number"
-                step="0.01"
-                name="competition"
-                class="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Weather Condition</label>
-            <div class="col-sm-8">
-              <select name="weather" class="form-select" required>
-                <option value="">Select</option>
-                <option value="Sunny">Sunny</option>
-                <option value="Rainy">Rainy</option>
-                <option value="Snowy">Snowy</option>
-                <option value="Cloudy">Cloudy</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Holiday/Promotion</label>
-            <div class="col-sm-8">
-              <select name="holiday" class="form-select" required>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Seasonality</label>
-            <div class="col-sm-8">
-              <select name="seasonality" class="form-select" required>
-                <option value="">Select</option>
-                <option value="High">Spring</option>
-                <option value="Medium">Summer</option>
-                <option value="Low">Autumn</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-4 col-form-label">Discount (%)</label>
-            <div class="col-sm-8">
-              <input
-                type="number"
-                name="discount"
-                step="0.01"
-                min="0"
-                max="100"
-                class="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-sm-12">
-              <button type="submit" class="btn btn-primary w-100">
-                Predict Optimal Price
-              </button>
-            </div>
-          </div>
-        </form>
-
-        {% if prediction is not none %}
-        <div class="alert alert-success mt-4 text-center">
-          Predicted Optimal Price:
-          <strong>${{ prediction }}</strong>
-        </div>
-        {% endif %}
+        </main>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/preview.js') }}"></script>
   </body>
 </html>
